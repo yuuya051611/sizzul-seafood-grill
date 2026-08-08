@@ -332,6 +332,59 @@
   .footer-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
   .footer-links{display:flex;gap:20px;}
   .footer-links a:hover{color:#fff;}
+
+  /* chatbot */
+  .chatbot{position:fixed;right:20px;bottom:20px;z-index:200;font-family:'Noto Sans JP',sans-serif;}
+  .chatbot-toggle{
+    width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;
+    background:var(--coral);box-shadow:0 12px 28px -8px rgba(232,83,47,0.6);
+    display:flex;align-items:center;justify-content:center;position:relative;
+    transition:transform .25s ease;
+  }
+  .chatbot-toggle:hover{transform:translateY(-2px) scale(1.05);}
+  .chatbot-toggle svg{width:26px;height:26px;}
+  .chatbot-badge{
+    position:absolute;top:-2px;right:-2px;width:18px;height:18px;border-radius:50%;
+    background:var(--sun);color:var(--ink);font-size:11px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .chatbot-panel{
+    position:absolute;bottom:72px;right:0;width:320px;max-width:calc(100vw - 32px);
+    background:#fff;border-radius:20px;box-shadow:0 24px 60px -20px rgba(28,43,51,0.4);
+    overflow:hidden;display:none;flex-direction:column;max-height:70vh;
+  }
+  .chatbot-panel.open{display:flex;}
+  .chatbot-header{
+    background:var(--sea-deep);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;
+  }
+  .chatbot-avatar{
+    width:34px;height:34px;border-radius:50%;background:var(--cream);
+    display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;
+  }
+  .chatbot-header b{display:block;font-family:'Shippori Mincho',serif;font-size:14px;}
+  .chatbot-header span{font-size:11px;opacity:0.85;}
+  .chatbot-close{
+    margin-left:auto;background:none;border:none;color:#fff;font-size:20px;line-height:1;
+    cursor:pointer;opacity:0.8;padding:4px;
+  }
+  .chatbot-close:hover{opacity:1;}
+  .chatbot-body{padding:14px 16px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px;background:var(--cream);}
+  .chat-msg{max-width:85%;padding:10px 13px;border-radius:14px;font-size:12.5px;line-height:1.6;}
+  .chat-msg.bot{background:#fff;color:var(--ink);align-self:flex-start;border-bottom-left-radius:4px;box-shadow:0 4px 12px -6px rgba(28,43,51,0.2);}
+  .chat-msg.user{background:var(--coral);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+  .chat-msg.bot a{color:var(--sea-deep);font-weight:700;text-decoration:underline;}
+  .chatbot-questions{display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px 16px;border-top:1px solid rgba(28,43,51,0.08);background:#fff;}
+  .chatbot-questions button{
+    border:1px solid rgba(15,127,146,0.3);background:#fff;color:var(--sea-deep);
+    font-size:11.5px;padding:7px 12px;border-radius:16px;cursor:pointer;transition:background .2s ease;
+  }
+  .chatbot-questions button:hover{background:var(--cream-deep);}
+  .chatbot-questions button:disabled{opacity:0.4;cursor:default;}
+  @media(max-width:480px){
+    .chatbot{right:14px;bottom:14px;}
+    .chatbot-toggle{width:52px;height:52px;}
+    .chatbot-panel{bottom:64px;width:calc(100vw - 28px);}
+  }
 </style>
 </head>
 <body>
@@ -571,6 +624,34 @@
   </div>
 </footer>
 
+<div class="chatbot" id="chatbot">
+  <button class="chatbot-toggle" id="chatbotToggle" aria-label="チャットで質問する">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    <span class="chatbot-badge">?</span>
+  </button>
+  <div class="chatbot-panel" id="chatbotPanel">
+    <div class="chatbot-header">
+      <div class="chatbot-avatar">🦪</div>
+      <div>
+        <b>シズールくん</b>
+        <span>よくある質問にお答えします</span>
+      </div>
+      <button class="chatbot-close" id="chatbotClose" aria-label="閉じる">×</button>
+    </div>
+    <div class="chatbot-body" id="chatbotBody">
+      <div class="chat-msg bot">こんにちは！シズール シーフード＆グリルです🐚<br>下のボタンから気になることを選んでください。</div>
+    </div>
+    <div class="chatbot-questions" id="chatbotQuestions">
+      <button data-q="hours">営業時間は？</button>
+      <button data-q="access">アクセスは？</button>
+      <button data-q="reserve">予約したい</button>
+      <button data-q="menu">おすすめメニューは？</button>
+      <button data-q="private">貸切はできる？</button>
+      <button data-q="parking">駐車場はある？</button>
+    </div>
+  </div>
+</div>
+
 <script>
   var els = document.querySelectorAll('.reveal');
   var io = new IntersectionObserver(function(entries){
@@ -617,6 +698,52 @@
   }
   updateOpenStatus();
   setInterval(updateOpenStatus, 60000);
+
+  // chatbot
+  var chatbotData = {
+    hours: { q: "営業時間は？", a: "月〜木 12:00〜23:30<br>金・祝前日 12:00〜翌1:00<br>土 13:00〜翌1:00<br>日・祝日 13:00〜21:30<br>定休日：不定休です。" },
+    access: { q: "アクセスは？", a: "西武池袋線 練馬駅より徒歩5分、桜台駅 南口より徒歩5分です。<br>住所：東京都練馬区豊玉上2-24-10 ハイライフ桜台102" },
+    reserve: { q: "予約したい", a: "LINE公式アカウントを友だち追加すると、チャットで予約・空席確認ができます。<br>お電話は <a href=\"tel:0367942276\">03-6794-2276</a> です。<br><a href=\"https://page.line.me/tyw5649k\" target=\"_blank\" rel=\"noopener\">LINEで予約する →</a>" },
+    menu: { q: "おすすめメニューは？", a: "宮城県直送の生牡蠣と、魚介のパエリアが人気No.1です。平日13:00〜16:00のハッピーアワーもおすすめです。" },
+    private: { q: "貸切はできる？", a: "16名様〜貸切のご相談を承っています。詳しくはLINEからお気軽にお問い合わせください。" },
+    parking: { q: "駐車場はある？", a: "専用駐車場はございませんが、近隣にコインパーキングがございます。" }
+  };
+
+  var chatbot = document.getElementById('chatbot');
+  var chatbotToggle = document.getElementById('chatbotToggle');
+  var chatbotPanel = document.getElementById('chatbotPanel');
+  var chatbotClose = document.getElementById('chatbotClose');
+  var chatbotBody = document.getElementById('chatbotBody');
+  var chatbotQuestions = document.getElementById('chatbotQuestions');
+
+  function addMsg(text, who){
+    var div = document.createElement('div');
+    div.className = 'chat-msg ' + who;
+    div.innerHTML = text;
+    chatbotBody.appendChild(div);
+    chatbotBody.scrollTop = chatbotBody.scrollHeight;
+  }
+
+  if(chatbotToggle){
+    chatbotToggle.addEventListener('click', function(){
+      chatbotPanel.classList.toggle('open');
+      if(chatbotPanel.classList.contains('open')){
+        chatbotBody.scrollTop = chatbotBody.scrollHeight;
+      }
+    });
+    chatbotClose.addEventListener('click', function(){
+      chatbotPanel.classList.remove('open');
+    });
+    chatbotQuestions.querySelectorAll('button').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var key = btn.getAttribute('data-q');
+        var item = chatbotData[key];
+        if(!item) return;
+        addMsg(item.q, 'user');
+        setTimeout(function(){ addMsg(item.a, 'bot'); }, 250);
+      });
+    });
+  }
 </script>
 
 </body>
