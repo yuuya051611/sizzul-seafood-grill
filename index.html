@@ -123,6 +123,21 @@
   .wave{position:relative;line-height:0;margin-top:-6px;z-index:2;}
   .wave svg{width:100%;height:auto;display:block;}
 
+  /* trust bar */
+  .trust-bar{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;max-width:760px;margin:-64px auto 8px;position:relative;z-index:3;padding:0 20px;}
+  .trust-item{
+    background:#fff;border-radius:16px;padding:13px 20px;
+    box-shadow:0 16px 32px -18px rgba(28,43,51,0.28);
+    display:flex;align-items:center;gap:9px;font-size:13px;white-space:nowrap;
+  }
+  .trust-item .ico{font-size:17px;}
+  .trust-item b{font-size:15px;color:var(--sea-deep);}
+  .trust-item span{color:var(--muted);font-size:11.5px;}
+  .trust-dot{width:9px;height:9px;border-radius:50%;background:#b7c0c2;flex-shrink:0;}
+  .trust-dot.is-open{background:#2fbf6e;box-shadow:0 0 0 4px rgba(47,191,110,.18);animation:pulse 2s ease-in-out infinite;}
+  .trust-dot.is-closed{background:#e8532f;}
+  .trust-note{text-align:center;font-size:11.5px;color:var(--muted);margin:0 auto 40px;position:relative;z-index:2;}
+
   /* section base */
   section{padding:100px 0;position:relative;overflow:hidden;}
   .section-head{text-align:center;max-width:640px;margin:0 auto 56px;position:relative;z-index:2;}
@@ -263,6 +278,13 @@
 <div class="wave">
   <svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0,32 C240,90 480,0 720,32 C960,64 1200,10 1440,40 L1440,90 L0,90 Z" fill="#fffaf0"/></svg>
 </div>
+
+<div class="trust-bar reveal">
+  <div class="trust-item"><span class="ico">⭐</span><b>3.9</b><span>口コミ47件</span></div>
+  <div class="trust-item" id="statusItem"><span class="trust-dot" id="statusDot"></span><b id="statusText">確認中…</b><span id="statusSub"></span></div>
+  <div class="trust-item"><span class="ico">🪑</span><b>26</b><span>席・カウンター有</span></div>
+</div>
+<p class="trust-note">営業状況は通常営業時間からの自動判定です。不定休のため、ご来店前はお電話でのご確認がおすすめです。</p>
 
 <section class="concept" id="concept">
   <div class="deco" style="top:8%;left:4%;width:44px;height:44px;animation:floaty2 7s ease-in-out infinite;">
@@ -433,6 +455,36 @@
       heroBg.style.transform = 'scale(1.08) translateY(' + (y * 0.25) + 'px)';
     }
   }, { passive: true });
+
+  function updateOpenStatus(){
+    var now = new Date();
+    var day = now.getDay();
+    var minutes = now.getHours() * 60 + now.getMinutes();
+    var open = false, nextChange = '';
+    if(day >= 1 && day <= 4){
+      open = minutes >= 720 && minutes < 1410;
+      nextChange = open ? '23:30まで' : '本日12:00〜';
+    } else if(day === 5){
+      open = minutes >= 720;
+      nextChange = open ? '翌1:00まで' : '本日12:00〜';
+    } else if(day === 6){
+      open = minutes < 60 || minutes >= 780;
+      nextChange = open ? '翌1:00まで' : '本日13:00〜';
+    } else {
+      open = minutes < 60 || (minutes >= 780 && minutes <= 1290);
+      nextChange = (minutes < 60) ? '翌1:00まで' : (open ? '21:30まで' : '本日13:00〜');
+    }
+    var dot = document.getElementById('statusDot');
+    var text = document.getElementById('statusText');
+    var sub = document.getElementById('statusSub');
+    if(dot && text && sub){
+      dot.className = 'trust-dot ' + (open ? 'is-open' : 'is-closed');
+      text.textContent = open ? '只今営業中' : '営業時間外';
+      sub.textContent = nextChange;
+    }
+  }
+  updateOpenStatus();
+  setInterval(updateOpenStatus, 60000);
 </script>
 
 </body>
