@@ -262,6 +262,15 @@
   .alacarte-row span:last-child{color:var(--coral-deep);font-weight:500;}
   @media(max-width:700px){ .alacarte-list{grid-template-columns:1fr;} }
 
+  .pairing{margin-top:56px;position:relative;z-index:2;}
+  .pairing-h{font-size:20px;color:var(--sea-deep);margin-bottom:20px;}
+  .pairing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .pairing-card{background:#fff;border-radius:16px;padding:22px;box-shadow:0 12px 28px -20px rgba(28,43,51,0.25);}
+  .pairing-tag{font-size:11px;color:var(--coral-deep);background:rgba(255,107,71,0.1);letter-spacing:0.05em;padding:4px 10px;border-radius:12px;display:inline-block;margin-bottom:10px;}
+  .pairing-card h4{font-family:'Shippori Mincho',serif;font-size:16px;margin-bottom:8px;color:var(--ink);}
+  .pairing-card p{font-size:13px;color:var(--muted);}
+  @media(max-width:700px){ .pairing-grid{grid-template-columns:1fr;} }
+
   /* gallery */
   .gallery{background:var(--cream);}
   .gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;position:relative;z-index:2;}
@@ -456,6 +465,23 @@
         <div class="alacarte-row"><span>ムール貝のワイン蒸し</span><span>コース内</span></div>
       </div>
     </div>
+
+    <div class="pairing reveal">
+      <div class="eyebrow">Pairing</div>
+      <h3 class="pairing-h">もう一品、いかがですか</h3>
+      <div class="pairing-grid">
+        <div class="pairing-card">
+          <span class="pairing-tag">組み合わせ</span>
+          <h4>生牡蠣 × 辛口白ワイン</h4>
+          <p>牡蠣の濃厚な旨みには、キリッとした辛口の白ワインがよく合います。追加の一杯にぜひ。</p>
+        </div>
+        <div class="pairing-card">
+          <span class="pairing-tag">平日 13:00〜16:00限定</span>
+          <h4>シズール ハッピーアワーセット</h4>
+          <p>生牡蠣2個と、生ビール・ハイボール・レモンサワー・白ワインからお好きな1杯がセットに。昼呑みにもぴったりです。料金はスタッフまたはLINEでお問い合わせください。</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -572,7 +598,7 @@
       nextChange = open ? '23:30まで' : '本日12:00〜';
     } else if(day === 5){
       open = minutes >= 720;
-      nextChange = open ? '翌1:00まで' : '本日12:00〜';
+      nextChange = open ? '翌1:00まで' : '本日13:00〜';
     } else if(day === 6){
       open = minutes < 60 || minutes >= 780;
       nextChange = open ? '翌1:00まで' : '本日13:00〜';
