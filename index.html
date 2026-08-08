@@ -169,6 +169,13 @@
     background:#06C755;color:#fff !important;padding:9px 16px;border-radius:20px;
     font-size:13px;font-weight:500;opacity:1 !important;display:inline-flex;align-items:center;gap:6px;
   }
+  .scroll-cue{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.85);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;}
+  @keyframes cueDot{
+    0%{transform:translateY(0);opacity:1;}
+    70%{transform:translateY(8px);opacity:0;}
+    100%{transform:translateY(0);opacity:0;}
+  }
+  .cue-dot{animation:cueDot 1.6s ease-in-out infinite;}
 
   .wave{position:relative;line-height:0;margin-top:-6px;z-index:2;}
   .wave svg{width:100%;height:auto;display:block;}
@@ -319,10 +326,9 @@
     <div class="hero-eyebrow hero-pop" style="animation-delay:.1s;">🐚 練馬 · 桜台 — Seafood Bar</div>
     <h1 class="hero-pop" style="animation-delay:.25s;">魚介と美味しいお酒を、<br>カジュアルに。</h1>
     <p class="hero-pop" style="animation-delay:.42s;">宮城県から直送の新鮮な生牡蠣と、旨みたっぷりの魚介パエリア。港町の酒場をイメージした、陽気でゴキゲンなシーフード酒場です。</p>
-    <div class="btn-row hero-pop" style="animation-delay:.58s;">
-      <a class="btn btn-line" href="https://page.line.me/tyw5649k" target="_blank" rel="noopener">LINEで予約・空席確認</a>
-      <a class="btn btn-primary" href="tel:0367942276">今すぐ電話予約</a>
-      <a class="btn btn-outline" href="#access">アクセスを見る</a>
+    <div class="scroll-cue hero-pop" style="animation-delay:.58s;">
+      <span>Scroll</span>
+      <svg width="14" height="20" viewBox="0 0 14 20" fill="none"><rect x="1" y="1" width="12" height="18" rx="6" stroke="#fff" stroke-width="1.4"/><circle class="cue-dot" cx="7" cy="6" r="1.6" fill="#fff"/></svg>
     </div>
   </div>
 </div>
