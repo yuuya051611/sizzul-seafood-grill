@@ -35,12 +35,13 @@
   a{color:inherit;text-decoration:none;}
   .wrap{max-width:1120px;margin:0 auto;padding:0 24px;position:relative;}
 
-  /* scroll reveal */
-  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.7,.3,1),transform .8s cubic-bezier(.2,.7,.3,1);}
+  /* scroll reveal — snappy "pop" easing */
+  .reveal{opacity:0;transform:translateY(34px) scale(.9) rotate(-1.5deg);transition:opacity .6s cubic-bezier(.34,1.56,.64,1),transform .6s cubic-bezier(.34,1.56,.64,1);}
   .reveal.in{opacity:1;transform:none;}
-  .reveal-1{transition-delay:.05s;}
-  .reveal-2{transition-delay:.15s;}
-  .reveal-3{transition-delay:.25s;}
+  .reveal-1{transition-delay:.06s;}
+  .reveal-2{transition-delay:.16s;}
+  .reveal-3{transition-delay:.26s;}
+  .reveal-4{transition-delay:.36s;}
 
   @keyframes floaty{
     0%,100%{transform:translateY(0) rotate(0deg);}
@@ -50,8 +51,17 @@
     0%,100%{transform:translateY(0) rotate(0deg);}
     50%{transform:translateY(12px) rotate(-5deg);}
   }
+  @keyframes heroPop{
+    0%{opacity:0;transform:translateY(26px) scale(.94);}
+    100%{opacity:1;transform:none;}
+  }
+  @keyframes pulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.12);}
+  }
   .deco{position:absolute;pointer-events:none;opacity:0.9;z-index:1;}
   .deco svg{width:100%;height:100%;display:block;}
+  .hero-pop{opacity:0;animation:heroPop .8s cubic-bezier(.34,1.56,.64,1) forwards;}
 
   /* header */
   header{
@@ -173,6 +183,25 @@
   .ig-note{text-align:center;margin-top:32px;font-size:13px;color:var(--muted);position:relative;z-index:2;}
   .ig-note a{color:var(--coral-deep);font-weight:500;}
 
+  .ig-header{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:36px;position:relative;z-index:2;flex-wrap:wrap;}
+  .ig-avatar{
+    width:52px;height:52px;border-radius:50%;flex-shrink:0;
+    background:linear-gradient(135deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
+    padding:3px;
+  }
+  .ig-avatar span{
+    display:flex;align-items:center;justify-content:center;width:100%;height:100%;
+    border-radius:50%;background:var(--cream);color:var(--sea-deep);font-size:20px;
+  }
+  .ig-who b{display:block;font-size:14.5px;color:var(--ink);}
+  .ig-who span{font-size:12.5px;color:var(--muted);}
+  .ig-follow{
+    background:linear-gradient(135deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
+    color:#fff;padding:9px 20px;border-radius:20px;font-size:13px;font-weight:500;
+    transition:transform .25s ease;
+  }
+  .ig-follow:hover{transform:translateY(-2px) scale(1.04);}
+
   /* access */
   .access{background:var(--sea);}
   .access-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:24px;overflow:hidden;box-shadow:0 24px 60px -30px rgba(15,60,70,0.5);position:relative;z-index:2;}
@@ -223,15 +252,15 @@
   <div class="deco" style="top:14%;right:8%;width:56px;height:56px;animation:floaty 6s ease-in-out infinite;">
     <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" stroke="#fff" stroke-width="2" opacity="0.5"/><circle cx="32" cy="32" r="18" stroke="#fff" stroke-width="2" opacity="0.35"/></svg>
   </div>
-  <div class="deco" style="top:26%;right:20%;width:30px;height:30px;animation:floaty2 5s ease-in-out infinite;">
+  <div class="deco" style="top:26%;right:20%;width:30px;height:30px;animation:pulse 2.4s ease-in-out infinite;">
     <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" fill="#ffc23c" opacity="0.85"/></svg>
   </div>
 
   <div class="hero-content">
-    <div class="hero-eyebrow">🐚 練馬 · 桜台 — Seafood Bar</div>
-    <h1>魚介と美味しいお酒を、<br>カジュアルに。</h1>
-    <p>宮城県から直送の新鮮な生牡蠣と、旨みたっぷりの魚介パエリア。港町の酒場をイメージした、陽気でゴキゲンなシーフード酒場です。</p>
-    <div class="btn-row">
+    <div class="hero-eyebrow hero-pop" style="animation-delay:.1s;">🐚 練馬 · 桜台 — Seafood Bar</div>
+    <h1 class="hero-pop" style="animation-delay:.25s;">魚介と美味しいお酒を、<br>カジュアルに。</h1>
+    <p class="hero-pop" style="animation-delay:.42s;">宮城県から直送の新鮮な生牡蠣と、旨みたっぷりの魚介パエリア。港町の酒場をイメージした、陽気でゴキゲンなシーフード酒場です。</p>
+    <div class="btn-row hero-pop" style="animation-delay:.58s;">
       <a class="btn btn-primary" href="tel:0367942276">今すぐ電話予約</a>
       <a class="btn btn-outline" href="#access">アクセスを見る</a>
     </div>
@@ -321,6 +350,11 @@
       <div class="eyebrow">Photo</div>
       <h2>店内の雰囲気</h2>
       <p>木のぬくもりとペンダントライトが灯る、居心地の良い店内。</p>
+    </div>
+    <div class="ig-header reveal">
+      <div class="ig-avatar"><span>🦪</span></div>
+      <div class="ig-who"><b>@sizzulseafoodgrill</b><span>練馬・桜台のシーフード酒場</span></div>
+      <a class="ig-follow" href="https://www.instagram.com/sizzulseafoodgrill/" target="_blank" rel="noopener">Instagramでフォロー</a>
     </div>
     <div class="gallery-grid">
       <a class="reveal" href="https://www.instagram.com/sizzulseafoodgrill/" target="_blank" rel="noopener"><img src="https://cdn.r-corona.jp/prd.rb.r-corona.jp/assets/site_files/bkuy8hud/62879416/zx7e_.jpg" alt="カウンター席"></a>
